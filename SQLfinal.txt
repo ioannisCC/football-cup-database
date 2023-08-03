@@ -1,0 +1,565 @@
+INSERT INTO club (name_cl, stadium, story, wins_home, wins_away, losses_home, losses_away, draws_home, draws_away)
+VALUES ('Olympiacos', 'Georgios Karaiskakis', 'Founded on 10 March 1925, Olympiacos is the most successful club in Greek football history,having won 47 League titles, 28 Cups (18 Doubles) and 4 Super Cups, all records. Τotalling 79 national trophies, Olympiacos is 9th in the world in total titles won by a football club', 5, 2, 0, 1, 1, 1),
+       ('Aek', 'OPAP Arena', 'The large Greek population of Constantinople, not unlike that of the other Ottoman urban centres, continued its athletic traditions in the form of numerous athletic clubs. Clubs such as Énosis Tatávlon (Ένωσις Ταταύλων) and Iraklís (Ηρακλής) from the Tatavla district, Mégas Aléxandros (Μέγας Αλέξανδρος) and Ermís (Ερμής) of Galata, and Olympiás (Ολυμπιάς) of Therapia existed to promote Hellenic athletic and cultural ideals. These were amongst a dozen Greek-backed clubs that dominated the sporting landscape of the city in the years preceding World War I.', 4, 2, 1, 1, 0, 2),
+	   ('Panathinaikos', 'Apostolos Nikolaidis', 'Created in 1908 as "Podosfairikos Omilos Athinon" (Football Club of Athens) by Georgios Kalafatis,they play in Super League Greece, being one of the most successful clubs in Greek football and one of the three clubs which have never been relegated from the top division', 4, 0, 2, 1, 1, 2);
+
+
+INSERT INTO player (id_p, name, surname, name_cl, position, cards_y, cards_r, goals, is_active)
+VALUES
+	(DEFAULT, 'Παναγιώτης', 'Ρέτσος', 'Olympiacos', 'Defender', 2, 0, 0, false),
+	(DEFAULT, 'Κώστας', 'Φορτούνης', 'Olympiacos', 'Midfielder', 0, 0, 2, true),
+	(DEFAULT, 'Υούσεφ', 'Ελ-Αραμπί', 'Olympiacos', 'Forward', 0, 0, 1, true),
+	(DEFAULT, 'Τζέιμς', 'Ροντρίγκες', 'Olympiacos', 'Midfielder', 0, 0, 0, true),
+	(DEFAULT, 'Μαρσέλο', 'Βιέιρα', 'Olympiacos', 'Defender', 0, 0, 2, true),
+	(DEFAULT, 'Γιώργος', 'Τζαβέλας', 'Aek', 'Defender', 0, 0, 1, false),
+	(DEFAULT, 'Πέτρος', 'Μάνταλος', 'Aek', 'Forward', 0, 0, 8, true),
+	(DEFAULT, 'Γιώργος', 'Αθανασιάδης', 'Aek', 'GoalKeeper', 1, 0, 2, true),
+	(DEFAULT, 'Κωνσταντίνος', 'Γαλανόπουλος', 'Aek', 'Midfielder', 0, 0, 7, true),
+	(DEFAULT, 'Λάζαρος', 'Ρότας', 'Aek', 'Defender', 0, 0, 2, true),
+	(DEFAULT, 'Φώτης', 'Ιωαννίδης', 'Panathinaikos', 'Forward', 0, 0, 12, true),
+	(DEFAULT, 'Λεονάρντο', 'Φρόκκου', 'Panathinaikos', 'Midfielder', 0, 1, 0, true),
+	(DEFAULT, 'Αλμπέρτο', 'Μπρινιόλι', 'Panathinaikos', 'Goalkeeper', 0, 0, 12, true),
+	(DEFAULT, 'Σεμπαστιάν', 'Παλάσιος', 'Panathinaikos', 'Midfielder', 0, 0, 12, true),
+	(DEFAULT, 'Ρούμπεν', 'Πέρεθ', 'Panathinaikos', 'Midfielder', 0, 0, 12, false);
+
+	   
+INSERT INTO player_club (id_p, name_cl)
+VALUES (1, 'Olympiacos'),
+       (2, 'Olympiacos'),
+	   (3, 'Olympiacos'),
+	   (4, 'Olympiacos'),
+	   (5, 'Olympiacos'),
+	   (6, 'Aek'),
+	   (7, 'Aek'),
+	   (8, 'Aek'),
+	   (9, 'Aek'),
+	   (10, 'Aek'),
+	   (11, 'Panathinaikos'),
+	   (12, 'Panathinaikos'),
+	   (13, 'Panathinaikos'),
+	   (14, 'Panathinaikos'),
+	   (15, 'Panathinaikos');
+
+
+INSERT INTO coach (id_p, name, surname, name_cl, position, cards_y, cards_r, goals, is_active, is_coach, name_cl_coach)
+SELECT
+	id_p, name, surname, name_cl, position, cards_y, cards_r, goals, is_active, true, name_cl
+FROM player
+WHERE id_p = (SELECT id_p FROM player WHERE name = 'Παναγιώτης' AND surname = 'Ρέτσος' AND player.is_active = false);
+
+INSERT INTO coach (id_p, name, surname, name_cl, position, cards_y, cards_r, goals, is_active, is_coach, name_cl_coach)
+SELECT
+	id_p, name, surname, name_cl, position, cards_y, cards_r, goals, is_active, true, name_cl
+FROM player
+WHERE id_p = (SELECT id_p FROM player WHERE name = 'Ρούμπεν' AND surname = 'Πέρεθ' AND player.is_active = false);
+
+
+-- Reset the sequence generator for the match_and_schedule table
+--ALTER SEQUENCE match_and_schedule_id_ms_seq RESTART WITH 1;
+
+
+INSERT INTO match_and_schedule (id_ms, home_club, visiting_club, home_score, visiting_score, date)
+VALUES (DEFAULT,'Olympiacos', 'Aek', 1, 0, '2023-02-15'),
+       (DEFAULT,'Aek', 'Olympiacos', 0, 0, '2023-02-26'),
+	   (DEFAULT,'Aek', 'Panathinaikos', 1, 0, '2023-03-21'),
+	   (DEFAULT,'Panathinaikos', 'Aek',0, 1, '2023-04-1'),
+	   (DEFAULT,'Olympiacos', 'Panathinaikos', 0, 2, '2023-04-9'),
+	   (DEFAULT,'Panathinaikos', 'Olympiacos', 0, 0, '2023-04-23'),
+	   (DEFAULT,'Aek', 'Panathinaikos', 1, 0, '2023-05-17'),
+	   (DEFAULT,'Olympiacos', 'Panathinaikos', 0, 2, '2023-05-30'),
+	   (DEFAULT,'Panathinaikos', 'Aek', 1, 0, '2023-06-14'),
+	   (DEFAULT,'Panathinaikos', 'Olympiacos', 2, 1, '2023-06-29');
+
+	   
+
+INSERT INTO match_and_player_goals (id_ms, penalty, goals_s, goals_c, id_player, time)
+VALUES (1, false, true, false, 2, '10:35'),
+       (2, false, false, true, 3, '27:13'),
+	   (3, false, true, false, 7, '32:59'),
+	   (4, false, true, false, 8, '32:39'),
+	   (5, false, true, false, 11, '81:10'),
+	   (6, true, false, false, 12, '91:50'),
+	   (7, false, false, true, 9, '45:10'),
+	   (8, false, true, false, 12, '90:15'),
+	   (9, true, false, false, 13, '10:29'),
+	   (10, false, true, false, 14, '01:10'),
+	   (1, true, false, false, 2, '10:45'),
+       (2, false, false, true, 3, '11:47'),
+	   (3, false, false, true, 7, '87:40'),
+	   (4, true, false, false, 8, '41:01'),
+	   (5, false, true, false, 12, '61:15'),
+	   (6, true, false, false, 12, '71:11'),
+	   (7, false, true, false, 8, '68:17'),
+	   (8, false, true, false, 13, '69:39'),
+	   (9, false, true, false, 13, '28:48'),
+	   (10, false, true, false, 14, '18:39'),
+	   (10, false, true, false, 3, '67:59'),
+	   (5, false, true, false, 4, '13:17'),
+	   (5, false, true, false, 3, '28:54'),
+	   (5, false, true, false, 4, '89:11');
+
+INSERT INTO match_and_corners (id_ms, corner, time)
+VALUES (1, true, '10:42'),
+	   (1, true, '17:35'),
+	   (1, true, '60:55'),
+	   (2, true, '17:38'),
+	   (3, true, '68:39'),
+	   (5, true, '90:01'),
+	   (8, true, '48:47'),
+	   (10, true, '89:15');
+       
+INSERT INTO match_and_player_cards (id_ms, cards_y, cards_r, id_player, time)
+VALUES (1, true, false, 2, '13:25'),
+       (2, true, false, 3, '54:05'),
+	   (10, true, false, 11, '46:19'),
+	   (9, false, true, 11, '61:05'),
+	   (10, false, true, 12, '65:08');
+
+----theoroume oti enas paixths den mporei na bgei kai na ksanabei opws kai sthn pragmatikothta
+INSERT INTO match_and_player_time_played (id_ms, id_player, time_played)
+VALUES
+    (1, 2, '09:42'),
+    (1, 3, '83:27'),
+    (1, 4, '15:01'),
+    (1, 5, '98:58'),
+    (1, 7, '20:33'),
+    (1, 8, '52:09'),
+    (1, 9, '43:17'),
+    (1, 10, '115:22'),
+    (2, 2, '34:11'),
+    (2, 3, '60:19'),
+    (2, 4, '23:40'),
+    (2, 5, '95:50'),
+    (2, 7, '09:08'),
+    (2, 8, '72:54'),
+    (2, 9, '30:47'),
+    (2, 10, '86:38'),
+    (3, 7, '16:14'),
+    (3, 8, '53:56'),
+    (3, 9, '74:27'),
+    (3, 10, '39:05'),
+    (3, 11, '107:39'),
+    (3, 12, '29:46'),
+    (3, 13, '65:59'),
+    (3, 14, '12:54'),
+    (4, 7, '45:32'),
+    (4, 8, '27:04'),
+    (4, 9, '91:15'),
+    (4, 10, '61:27'),
+    (4, 11, '102:58'),
+    (4, 12, '20:05'),
+    (4, 13, '58:37'),
+    (4, 14, '34:41'),
+    (5, 2, '73:51'),
+    (5, 3, '16:24'),
+    (5, 4, '88:40'),
+    (5, 5, '54:16'),
+    (5, 11, '112:45'),
+    (5, 12, '41:18'),
+    (5, 13, '76:59'),
+    (5, 14, '22:37'),
+    (6, 2, '39:57'),
+    (6, 3, '75:43'),
+    (6, 4, '48:26'),
+    (6, 5, '84:55'),
+    (6, 11, '33:12'),
+    (6, 12, '65:35'),
+    (6, 13, '21:48'),
+    (6, 14, '52:57'),
+    (7, 7, '59:08'),
+    (7, 8, '32:40'),
+    (7, 9, '76:52'),
+    (7, 10, '45:09'),
+    (7, 11, '91:01'),
+    (7, 12, '18:14'),
+    (7, 13, '62:27'),
+    (7, 14, '27:37'),
+    (8, 7, '20:02'),
+    (8, 8, '47:43'),
+    (8, 9, '88:22'),
+    (8, 10, '11:36'),
+    (8, 11, '105:49'),
+    (8, 12, '23:30'),
+    (8, 13, '54:58'),
+    (8, 14, '30:19'),
+    (9, 7, '61:28'),
+    (9, 8, '28:04'),
+    (9, 9, '82:12'),
+    (9, 10, '17:32'),
+    (9, 11, '95:53'),
+    (9, 12, '37:14'),
+    (9, 13, '68:44'),
+    (9, 14, '43:06'),
+    (10, 2, '94:05'),
+    (10, 3, '45:28'),
+    (10, 4, '116:07'),
+    (10, 5, '60:33'),
+    (10, 11, '14:50'),
+    (10, 12, '87:03'),
+    (10, 13, '28:16'),
+    (10, 14, '75:22');
+
+
+
+
+
+-------------------------
+
+
+create table club
+( name_cl VARCHAR(30)  PRIMARY KEY UNIQUE,
+  stadium VARCHAR(50) NOT NULL UNIQUE,
+ story VARCHAR(1000) NOT NULL UNIQUE,
+ wins_home INTEGER NOT NULL,
+ wins_away INTEGER NOT NULL,
+ losses_home INTEGER NOT NULL,
+ losses_away INTEGER NOT NULL,
+ draws_home INTEGER NOT NULL,
+ draws_away INTEGER NOT NULL
+);
+
+create table player
+( id_p SERIAL PRIMARY KEY NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    surname VARCHAR(20) NOT NULL,
+    CONSTRAINT name_charset CHECK (name ~ '^[Α-Ωα-ωάέήίϊΐόύϋΰώ\-]+$' AND surname ~ '^[Α-Ωα-ωάέήίϊΐόύϋΰώ\-]+$'),
+ 	name_cl VARCHAR(30) REFERENCES club(name_cl) NOT NULL,
+ 	position VARCHAR(20) NOT NULL,
+ 	cards_y INTEGER NOT NULL,
+ 	cards_r INTEGER NOT NULL,
+ 	goals INTEGER NOT NULL,
+ 	is_active BOOLEAN NOT NULL
+);
+
+create table player_club
+( id_p INTEGER REFERENCES player(id_p) NOT NULL,
+    name_cl VARCHAR(30) REFERENCES club(name_cl) NOT NULL,
+	 PRIMARY KEY(id_p, name_cl)
+);
+
+CREATE TABLE coach (
+   is_coach BOOLEAN NOT NULL,
+   name_cl_coach VARCHAR(30) REFERENCES club(name_cl) NOT NULL UNIQUE
+) INHERITS (player);
+
+
+CREATE TABLE match_and_schedule (
+    id_ms SERIAL PRIMARY KEY NOT NULL,
+	home_club VARCHAR(30) REFERENCES club(name_cl) NOT NULL,
+	visiting_club VARCHAR(30) REFERENCES club(name_cl) NOT NULL,
+	home_score INTEGER NOT NULL,
+	visiting_score INTEGER NOT NULL,
+	date DATE NOT NULL,
+	CONSTRAINT unique_match_teams_date UNIQUE (home_club, visiting_club, date)
+);
+
+
+CREATE TABLE match_and_player_goals (
+    id_ms INTEGER REFERENCES match_and_schedule(id_ms),
+	penalty BOOLEAN NOT NULL,
+	goals_s BOOLEAN NOT NULL,
+	goals_c BOOLEAN NOT NULL,
+	id_player INTEGER REFERENCES player(id_p),
+	time INTERVAL NOT NULL,
+	PRIMARY KEY(id_ms, time)
+);
+
+CREATE TABLE match_and_corners (
+    id_ms INTEGER REFERENCES match_and_schedule(id_ms) NOT NULL,
+	corner BOOLEAN NOT NULL,
+	time INTERVAL NOT NULL,
+	PRIMARY KEY(id_ms, time)
+);
+
+
+CREATE TABLE match_and_player_cards (
+    id_ms INTEGER REFERENCES match_and_schedule(id_ms) NOT NULL,
+	cards_y BOOLEAN  DEFAULT false NOT NULL,
+	cards_r BOOLEAN  DEFAULT false NOT NULL,
+	id_player INTEGER REFERENCES player(id_p) NOT NULL,
+	time INTERVAL NOT NULL,
+	PRIMARY KEY(id_ms, time)
+);
+
+
+CREATE TABLE match_and_player_time_played(
+    id_ms INTEGER REFERENCES match_and_schedule(id_ms) NOT NULL,
+    id_player INTEGER REFERENCES player(id_p) NOT NULL,
+    time_played INTERVAL NOT NULL,
+    PRIMARY KEY(id_ms, id_player)
+);
+---------------------------------------------------------------------
+
+--Creates a function that checks the row count for a specific club name
+CREATE OR REPLACE FUNCTION check_player_count()
+  RETURNS TRIGGER AS
+$$
+DECLARE
+  player_count INTEGER;
+BEGIN
+  -- Get the count of rows for the current club name
+  SELECT COUNT(*) INTO player_count
+  FROM player
+  WHERE name_cl = NEW.name_cl;
+
+  -- Raise an exception if the row count exceeds the limit
+  IF player_count >= 11 THEN
+    RAISE EXCEPTION 'Maximum row limit reached for club: %', NEW.name_cl;
+  END IF;
+
+  RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Create a trigger that calls the check_player_count function before insert
+CREATE TRIGGER limit_player_count
+BEFORE INSERT ON player
+FOR EACH ROW
+EXECUTE FUNCTION check_player_count();
+
+
+
+
+
+
+
+
+-- Create a function to check the time difference between matches
+CREATE OR REPLACE FUNCTION check_match_schedule() RETURNS TRIGGER AS $$
+DECLARE
+    previous_match_date DATE;
+BEGIN
+    -- Check if the home team has a match within 10 days before or after the current match
+    SELECT date INTO previous_match_date
+    FROM match_and_schedule
+    WHERE (home_club = NEW.home_club OR visiting_club = NEW.home_club)
+    AND date >= NEW.date - INTERVAL '10 days'
+    AND date <= NEW.date + INTERVAL '10 days'
+    AND id_ms != NEW.id_ms;
+    
+    IF previous_match_date IS NOT NULL THEN
+        RAISE EXCEPTION 'A team has a match within 10 days before or after this match.';
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create a trigger to call the function before inserting into the match_and_schedule table
+CREATE TRIGGER check_match_schedule_trigger
+BEFORE INSERT ON match_and_schedule
+FOR EACH ROW
+EXECUTE FUNCTION check_match_schedule();
+
+
+
+
+
+--------------------------------------------------------
+-----1.c.
+
+DROP VIEW schedule_match
+
+CREATE VIEW schedule_match AS
+    SELECT match_and_schedule.date, match_and_schedule.home_club, match_and_schedule.visiting_club, match_and_schedule.home_score, match_and_schedule.visiting_score,
+	club.stadium, player.name, player.surname, player.position, player.name_cl, match_and_player_cards.cards_y ,match_and_player_cards.cards_r,  match_and_player_time_played.time_played, 
+	match_and_player_goals.goals_s, match_and_player_goals.time
+        FROM 
+			match_and_schedule	
+		 FULL JOIN	
+			club ON match_and_schedule.home_club = club.name_cl		
+		FULL JOIN
+			 player ON match_and_schedule.home_club = player.name_cl OR match_and_schedule.visiting_club = player.name_cl			
+		LEFT  JOIN
+			match_and_player_cards ON player.id_p = match_and_player_cards.id_player AND match_and_schedule.id_ms = match_and_player_cards.id_ms
+		FULL JOIN	
+			match_and_player_goals ON match_and_schedule.id_ms = match_and_player_goals.id_ms AND match_and_player_goals.id_player = player.id_p
+		FULL JOIN
+			 match_and_player_time_played ON match_and_player_time_played.id_ms = match_and_schedule.id_ms AND match_and_player_time_played.id_player = player.id_p		
+        WHERE 
+			match_and_schedule.date = '2023-06-29' AND
+			player.is_active = true;		
+			
+			
+				
+
+SELECT * FROM schedule_match
+
+
+DROP VIEW season_matches
+
+CREATE VIEW season_matches AS
+SELECT match_and_schedule.date, match_and_schedule.home_club, match_and_schedule.visiting_club, match_and_schedule.home_score, match_and_schedule.visiting_score, club.stadium
+FROM match_and_schedule
+JOIN club ON match_and_schedule.home_club = club.name_cl
+WHERE match_and_schedule.date BETWEEN '2023-04-01' AND '2023-06-30'
+ORDER BY date;
+
+SELECT * FROM season_matches;
+
+
+
+--------------------------------------------------------
+-----2.a.
+
+SELECT club.name_cl, coach.name, coach.surname
+FROM match_and_schedule
+JOIN club ON (match_and_schedule.home_club = club.name_cl OR match_and_schedule.visiting_club = club.name_cl)
+JOIN coach ON (club.name_cl = coach.name_cl AND coach.is_coach = true)
+WHERE match_and_schedule.id_ms = 10 AND club.name_cl = 'Olympiacos' AND coach.is_coach = true;
+
+
+--------------------------------------------------------
+-----2.b.
+
+SELECT match_and_player_goals.penalty, match_and_player_goals.goals_s, match_and_player_goals.time, player.name, player.surname
+FROM match_and_schedule
+JOIN match_and_player_goals ON match_and_player_goals.id_ms = match_and_schedule.id_ms
+JOIN player ON player.id_p = match_and_player_goals.id_player
+WHERE match_and_schedule.id_ms = 10
+
+
+--------------------------------------------------------
+-----2.c.
+
+---xrhsimopoiume to COALESCE WSTE NA THETOUME TIS NULL TIMES SE 0 KAI NA MIN UPOLOGIZONTAI APO THN SUM
+SELECT player.id_p, player.name, player.surname, SUM(match_and_player_time_played.time_played) AS total_time_played, player.position , 
+ COALESCE(SUM(CASE WHEN match_and_player_goals.goals_s = true THEN 1 ELSE 0 END),0) AS player_goals, COALESCE(SUM(CASE WHEN match_and_player_goals.penalty = true THEN 1 ELSE 0 END),0) AS player_penalties,
+ COALESCE(SUM(CASE WHEN match_and_player_cards.cards_y = true THEN 1 ELSE 0 END),0) AS player_yellow_cards, 
+ COALESCE(SUM(CASE WHEN match_and_player_cards.cards_r = true THEN 1 ELSE 0 END),0) AS player_red_cards
+FROM match_and_schedule
+NATURAL JOIN match_and_player_time_played
+JOIN player ON player.id_p = match_and_player_time_played.id_player
+NATURAL JOIN match_and_player_goals 
+LEFT JOIN match_and_player_cards ON match_and_player_cards.id_player =  match_and_player_goals.id_player
+WHERE (match_and_schedule.date BETWEEN '2023-04-01' AND '2023-06-30') AND match_and_player_time_played.id_player = 14
+GROUP BY player.id_p
+
+
+SELECT* FROM match_and_player_goals WHERE id_player = 14
+
+  
+----------------------------------------------------2d
+
+SELECT
+  home_matches,
+  away_matches,
+  total_home_score,
+  total_away_score,
+  total_home_score + total_away_score AS total_score,
+  home_matches + away_matches AS total_matches,
+  subquery.total_wins_home,
+  subquery.total_wins_away,
+  subquery.total_wins_home + subquery.total_wins_away AS total_wins,
+  subquery.total_draws_home,
+  subquery.total_draws_away,
+  subquery.total_draws_home + subquery.total_draws_away AS total_draws,
+  (home_matches + away_matches) - (subquery.total_wins_home + subquery.total_wins_away + subquery.total_draws_home + subquery.total_draws_away) AS total_losses,
+  home_matches - (subquery.total_wins_home + subquery.total_draws_home) AS total_losses_home,
+  away_matches - (subquery.total_wins_away + subquery.total_draws_away) AS total_losses_away
+FROM (
+  SELECT
+    SUM(CASE WHEN match_and_schedule.home_club='Aek' THEN 1 ELSE 0 END) AS home_matches,
+    SUM(CASE WHEN match_and_schedule.visiting_club='Aek' THEN 1 ELSE 0 END) AS away_matches,
+    SUM(CASE WHEN match_and_schedule.home_club='Aek' THEN match_and_schedule.home_score ELSE 0 END) AS total_home_score,
+    SUM(CASE WHEN match_and_schedule.visiting_club='Aek' THEN match_and_schedule.visiting_score ELSE 0 END) AS total_away_score,
+    SUM(CASE WHEN (match_and_schedule.home_club='Aek' AND (match_and_schedule.home_score > match_and_schedule.visiting_score)) THEN 1 ELSE 0 END) AS total_wins_home,
+    SUM(CASE WHEN (match_and_schedule.visiting_club='Aek' AND (match_and_schedule.visiting_score > match_and_schedule.home_score)) THEN 1 ELSE 0 END) AS total_wins_away,
+    SUM(CASE WHEN (match_and_schedule.home_club='Aek' AND (match_and_schedule.home_score = match_and_schedule.visiting_score)) THEN 1 ELSE 0 END) AS total_draws_home,
+    SUM(CASE WHEN (match_and_schedule.visiting_club='Aek' AND (match_and_schedule.visiting_score = match_and_schedule.home_score)) THEN 1 ELSE 0 END) AS total_draws_away
+  FROM match_and_schedule
+  WHERE match_and_schedule.date BETWEEN '2023-04-01' AND '2023-06-30'
+) AS subquery;
+
+SELECT * FROM match_and_schedule 
+
+
+-------------------------------------3.a
+
+create table drop_category_club
+( name_cl VARCHAR(30)  PRIMARY KEY UNIQUE,
+  stadium VARCHAR(50) NOT NULL UNIQUE,
+ story VARCHAR(1000) NOT NULL UNIQUE,
+ wins_home INTEGER NOT NULL,
+ wins_away INTEGER NOT NULL,
+ losses_home INTEGER NOT NULL,
+ losses_away INTEGER NOT NULL,
+ draws_home INTEGER NOT NULL,
+ draws_away INTEGER NOT NULL,
+ deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+--valame to deleted_at giati ayto enhmerwnetai kathe fora pou ena pedio ginetai DELETE etsi tha boroume na xrhsimopoihsoume kai to OLD keyword
+
+
+
+CREATE FUNCTION clubs_log_function() RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO drop_category_club (name_cl, stadium, story, wins_home, wins_away, losses_home, losses_away, draws_home, draws_away)
+    VALUES (OLD.name_cl, OLD.stadium, OLD.story, OLD.wins_home, OLD.wins_away, OLD.losses_home, OLD.losses_away, OLD.draws_home, OLD.draws_away);
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER clubs_log
+AFTER DELETE ON club
+FOR EACH ROW
+EXECUTE FUNCTION clubs_log_function();
+
+DELETE FROM club WHERE name_cl = 'PAOK'
+
+INSERT INTO club (name_cl, stadium, story, wins_home, wins_away, losses_home, losses_away, draws_home, draws_away)
+VALUES ('PAOK', 'TOUMPA ARENA', 'story.....', 2, 0, 1, 1, 1);
+     
+SELECT * FROM drop_category_club
+
+-----------------------------------------------------3.b			
+		
+DO $$
+DECLARE
+    group_cursor CURSOR FOR
+        SELECT COUNT(subquery.goals_s), COUNT(subquery.penalty), COUNT(subquery.cards_r), COUNT(subquery.cards_y), subquery.time_played, subquery.position, subquery.date
+        FROM (SELECT match_and_schedule.id_ms, match_and_schedule.date, match_and_schedule.home_club, match_and_schedule.visiting_club, match_and_schedule.home_score, match_and_schedule.visiting_score,
+	club.stadium, player.name, player.surname, player.position, player.name_cl, match_and_player_cards.cards_y ,match_and_player_cards.cards_r,  match_and_player_time_played.time_played, 
+	match_and_player_goals.goals_s, match_and_player_goals.penalty, match_and_player_goals.time
+        FROM 
+			match_and_schedule	
+		 FULL JOIN	
+			club ON match_and_schedule.home_club = club.name_cl		
+		FULL JOIN
+			 player ON match_and_schedule.home_club = player.name_cl OR match_and_schedule.visiting_club = player.name_cl			
+		LEFT  JOIN
+			match_and_player_cards ON player.id_p = match_and_player_cards.id_player AND match_and_schedule.id_ms = match_and_player_cards.id_ms
+		FULL JOIN	
+			match_and_player_goals ON match_and_schedule.id_ms = match_and_player_goals.id_ms AND match_and_player_goals.id_player = player.id_p
+		FULL JOIN
+			 match_and_player_time_played ON match_and_player_time_played.id_ms = match_and_schedule.id_ms AND match_and_player_time_played.id_player = player.id_p		
+        WHERE 
+			(match_and_schedule.date BETWEEN ('2023-3-10') AND  ('2023-06-15')) AND
+			player.is_active = true	) AS subquery
+        GROUP BY subquery.date, subquery.home_club, subquery.id_ms, subquery.time_played,subquery.position, subquery.date  ;
+
+    current_row RECORD;
+    counter INTEGER := 0;
+BEGIN
+    OPEN group_cursor;
+
+    LOOP
+        FETCH group_cursor INTO current_row;
+        EXIT WHEN NOT FOUND;
+
+        RAISE NOTICE 'Goals: %, Penalties: %, Cards R: %, Cards Y: %, Time Played: %, Position: %, Date: %',
+            current_row.count, current_row.count, current_row.count, current_row.count, current_row.time_played, current_row.position, current_row.date ;
+        counter := counter + 1;
+
+        IF counter = 10 THEN
+            counter := 0;
+            RAISE NOTICE '-------------------';
+        END IF;
+    END LOOP;
+
+    CLOSE group_cursor;
+END;
+$$;
+
+		
+		
